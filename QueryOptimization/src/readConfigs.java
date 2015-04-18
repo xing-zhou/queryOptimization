@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class configs {
+public class readConfigs {
 	int r;
 	int t;
 	int l;
@@ -13,7 +13,7 @@ public class configs {
 	int a;
 	int f;
 
-	public configs(){
+	public readConfigs(){
 		BufferedReader br = null;
 		List<Integer> list = new ArrayList<Integer>();
 		try {

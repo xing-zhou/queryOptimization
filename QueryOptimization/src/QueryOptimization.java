@@ -30,13 +30,13 @@ public class QueryOptimization {
 		System.out.println("Hello World!");
 		System.out.println("Hello Again World!");
 		
-		configs myConfig = new configs();
-		System.out.println(myConfig.r);
-		System.out.println(myConfig.t);
-		System.out.println(myConfig.l);
-		System.out.println(myConfig.m);
-		System.out.println(myConfig.a);
-		System.out.println(myConfig.f);
+		readConfigs config = new readConfigs();
+		System.out.println(config.r);
+		System.out.println(config.t);
+		System.out.println(config.l);
+		System.out.println(config.m);
+		System.out.println(config.a);
+		System.out.println(config.f);
 		
 		BufferedReader br = null;
 		
