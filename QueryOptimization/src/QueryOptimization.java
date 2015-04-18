@@ -6,6 +6,24 @@ import java.util.List;
 
 
 public class QueryOptimization {
+	
+	public static List<List<basicTerm>> powerSet(List<basicTerm> mylist) {
+		List<List<basicTerm>> ps = new ArrayList<List<basicTerm>>();
+		ps.add(new ArrayList<basicTerm>());
+		
+		for (basicTerm item : mylist) {
+			List<List<basicTerm>> newPs = new ArrayList<List<basicTerm>>();
+			for (List<basicTerm> subset : ps) {
+				newPs.add(subset);
+				
+				List<basicTerm> newSubset = new ArrayList<basicTerm>(subset);
+				newSubset.add(item);
+				newPs.add(newSubset);
+			}
+			ps = newPs;
+		}
+		return ps;
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -65,6 +83,15 @@ public class QueryOptimization {
 			for (basicTerm term : node.conditions)
 				System.out.print(term.selectivity + ", ");
 			System.out.println("hahaha");
+		}
+		List<List<basicTerm>> myps = powerSet(queryList.get(0).conditions);
+		List<planNode> logicalAnd = new ArrayList<planNode>();
+		for (List<basicTerm> subset : myps){
+			//for (basicTerm term : subset)
+				//System.out.print(term.selectivity + ", ");
+			planNode newPlanNode = new planNode(subset);
+			logicalAnd.add(newPlanNode);
+			System.out.println("");
 		}
 	}
 
