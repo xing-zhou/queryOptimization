@@ -10,4 +10,8 @@ public class planNode {
 		c = 0.0;
 		b = false;
 	}
+	//public Double computeCost(){
+		//int k = subset.size();
+		
+	//}
 }

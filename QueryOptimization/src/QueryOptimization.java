@@ -30,29 +30,17 @@ public class QueryOptimization {
 		System.out.println("Hello World!");
 		System.out.println("Hello Again World!");
 		
+		configs myConfig = new configs();
+		System.out.println(myConfig.r);
+		System.out.println(myConfig.t);
+		System.out.println(myConfig.l);
+		System.out.println(myConfig.m);
+		System.out.println(myConfig.a);
+		System.out.println(myConfig.f);
+		
 		BufferedReader br = null;
-		try {
-			String configLine;
-			br = new BufferedReader(new FileReader("./config.txt"));
-			while ((configLine = br.readLine()) != null) {
-				System.out.println(configLine);
-			}
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		finally {
-			try {
-				if (br != null)
-					br.close();
-			}
-			catch (IOException ex){
-				ex.printStackTrace();
-			}
-		}
 		
 		List <queryNode> queryList = new ArrayList<queryNode>();
-		br = null;
 		try {
 			String queryLine;
 			br = new BufferedReader(new FileReader("./query.txt"));
