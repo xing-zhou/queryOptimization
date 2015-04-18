@@ -6,23 +6,23 @@ import java.util.List;
 
 
 public class readConfigs {
-	int r;
-	int t;
-	int l;
-	int m;
-	int a;
-	int f;
+	Double r;
+	Double t;
+	Double l;
+	Double m;
+	Double a;
+	Double f;
 
 	public readConfigs(){
 		BufferedReader br = null;
-		List<Integer> list = new ArrayList<Integer>();
+		List<Double> list = new ArrayList<Double>();
 		try {
 			String configLine;
 			br = new BufferedReader(new FileReader("./config.txt"));
 			while ((configLine = br.readLine()) != null) {
 				//System.out.println(configLine);
 				String [] s = configLine.split("\\s+");
-				list.add(Integer.valueOf(s[2]));
+				list.add(Double.valueOf(s[2]));
 			}
 		}
 		catch (IOException e) {

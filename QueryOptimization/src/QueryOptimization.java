@@ -22,6 +22,7 @@ public class QueryOptimization {
 			}
 			ps = newPs;
 		}
+		ps.remove(0);
 		return ps;
 	}
 
@@ -72,12 +73,12 @@ public class QueryOptimization {
 				System.out.print(term.selectivity + ", ");
 			System.out.println("hahaha");
 		}
-		List<List<basicTerm>> myps = powerSet(queryList.get(0).conditions);
+		List<List<basicTerm>> myps = powerSet(queryList.get(4).conditions);
 		List<planNode> logicalAnd = new ArrayList<planNode>();
 		for (List<basicTerm> subset : myps){
 			//for (basicTerm term : subset)
 				//System.out.print(term.selectivity + ", ");
-			planNode newPlanNode = new planNode(subset);
+			planNode newPlanNode = new planNode(subset,config);
 			logicalAnd.add(newPlanNode);
 			System.out.println("");
 		}
