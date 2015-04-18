@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class helloworld {
+public class QueryOptimization {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -43,7 +43,8 @@ public class helloworld {
 				int i = 0;
 				queryNode node = new queryNode();
 				for (i = 0; i < parsing.length;i++){
-					node.conditions.add(Double.valueOf(parsing[i]));
+					basicTerm term = new basicTerm(Double.valueOf(parsing[i]));
+					node.conditions.add(term);
 				}
 				queryList.add(node);
 			}
@@ -61,7 +62,8 @@ public class helloworld {
 			}
 		}
 		for (queryNode node : queryList){
-			System.out.println(node.conditions);
+			for (basicTerm term : node.conditions)
+				System.out.print(term.selectivity + ", ");
 			System.out.println("hahaha");
 		}
 	}
