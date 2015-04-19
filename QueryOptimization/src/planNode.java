@@ -11,6 +11,8 @@ public class planNode {
 	Double fcost;//fcost(E)
 	Double cost_ratio;//(p-1)/fcost(E)
 	Double combined_selectivity;
+	planNode L;
+	planNode R;
 	public planNode(List<basicTerm> newPlan, readConfigs con){
 		subset = newPlan;
 		k = (double)subset.size();
@@ -34,6 +36,8 @@ public class planNode {
 		System.out.println("]\nfinal Cost: " + c);
 		System.out.println("k = " + k);
 		System.out.println("b = " + b);
+		L = null;
+		R = null;
 	}
 	public Double computeCost(){
 		Double q = 1.0;

@@ -105,7 +105,12 @@ public class QueryOptimization {
 		for (int i = 0; i < logicalAnd.size(); i++){
 			for (int j = 0; j < logicalAnd.size(); j++){
 				if (intersection(logicalAnd.get(i).subset,logicalAnd.get(j).subset) == false){
-					if (c_metric)
+					c_metric R_cMetric = new c_metric(logicalAnd.get(i));//for subset s
+					c_metric L_cMetric = new c_metric(logicalAnd.get(j));//for subset s'
+					if (L_cMetric.combined_selectivity < R_cMetric.combined_selectivity && L_cMetric.cost_ratio < R_cMetric.cost_ratio){
+						//do nothing as Lemma 4.8 implies
+					}
+					else if (logicalAnd.get(j).combined_selectivity <= 0.5 && )
 				}
 			}
 		}
