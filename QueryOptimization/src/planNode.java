@@ -8,10 +8,12 @@ public class planNode {
 	Boolean b;
 	Double k;
 	readConfigs config;
+	Double fcost;
 	public planNode(List<basicTerm> newPlan, readConfigs con){
 		subset = newPlan;
 		k = (double)subset.size();
 		config = con;
+		fcost = compute_fcost();
 		b = false;
 		c = computeCost();
 		Double no_branch = computeNoBranchCost();
@@ -47,5 +49,11 @@ public class planNode {
 		no_branch_cost = Math.round(no_branch_cost * 1000.000)/1000.000;
 		System.out.println("no_branch Cost: " + no_branch_cost);
 		return no_branch_cost;
+	}
+	
+	public Double compute_fcost(){
+		Double k = (double)subset.size();
+		Double _fcost = config.r * k + (k-1) * config.l + config.f*k + config.t;
+		return _fcost;
 	}
 }
