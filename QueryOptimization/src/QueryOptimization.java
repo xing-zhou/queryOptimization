@@ -25,6 +25,24 @@ public class QueryOptimization {
 		ps.remove(0);
 		return ps;
 	}
+	
+	public static boolean intersection(List<basicTerm> a, List<basicTerm> b){
+		for (int i = 0; i < a.size(); i++){
+			for (int j = 0; j < b.size(); j++)
+				if (a.get(i).selectivity == b.get(j).selectivity)
+					return true;
+		}
+		return false;
+	}
+	
+	public static void printPowerSet(List<planNode> mylist){
+		for (planNode p : mylist){
+			System.out.print("[");
+			for (basicTerm term : p.subset)
+				System.out.print(term.selectivity + ", ");
+			System.out.print("] best cost: " + p.c + "\n" );
+		}
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -73,7 +91,7 @@ public class QueryOptimization {
 				System.out.print(term.selectivity + ", ");
 			System.out.println("hahaha");
 		}
-		List<List<basicTerm>> myps = powerSet(queryList.get(4).conditions);
+		List<List<basicTerm>> myps = powerSet(queryList.get(0).conditions);
 		List<planNode> logicalAnd = new ArrayList<planNode>();
 		for (List<basicTerm> subset : myps){
 			//for (basicTerm term : subset)
@@ -82,6 +100,16 @@ public class QueryOptimization {
 			logicalAnd.add(newPlanNode);
 			System.out.println("");
 		}
+		printPowerSet(logicalAnd);
+		/*
+		for (int i = 0; i < logicalAnd.size(); i++){
+			for (int j = 0; j < logicalAnd.size(); j++){
+				if (intersection(logicalAnd.get(i).subset,logicalAnd.get(j).subset) == false){
+					
+				}
+			}
+		}
+		*/
 	}
 
 }
