@@ -105,7 +105,7 @@ public class QueryOptimization {
 		for (int i = 0; i < logicalAnd.size(); i++){
 			for (int j = 0; j < logicalAnd.size(); j++){
 				if (intersection(logicalAnd.get(i).subset,logicalAnd.get(j).subset) == false){
-					
+					if (c_metric)
 				}
 			}
 		}
