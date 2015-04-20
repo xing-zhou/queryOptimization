@@ -13,12 +13,12 @@ public class readConfigs {
 	Double a;
 	Double f;
 
-	public readConfigs(){
+	public readConfigs(String configPath){
 		BufferedReader br = null;
 		List<Double> list = new ArrayList<Double>();
 		try {
 			String configLine;
-			br = new BufferedReader(new FileReader("./config.txt"));
+			br = new BufferedReader(new FileReader(configPath));
 			while ((configLine = br.readLine()) != null) {
 				//System.out.println(configLine);
 				String [] s = configLine.split("\\s+");
