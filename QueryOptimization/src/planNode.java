@@ -3,7 +3,7 @@ import java.util.List;
 
 
 public class planNode {
-	List<basicTerm> subset;//the &-term in this plan
+	List<basicTerm> set;//the &-term in this plan
 	Double c;//cost of this plan (&-term)
 	Boolean b;//boolean for no-branch option
 	Double k;//size of the subset
@@ -13,8 +13,7 @@ public class planNode {
 	Double combined_selectivity;
 	planNode L;
 	planNode R;
-	public planNode(List<basicTerm> newPlan, readConfigs con){
-		subset = newPlan;
+	public planNode(List<basicTerm> subset, readConfigs con){
 		k = (double)subset.size();
 		config = con;
 		combined_selectivity = 1.0;
@@ -24,24 +23,27 @@ public class planNode {
 		fcost = compute_fcost();
 		cost_ratio = compute_cost_ratio();
 		b = false;
-		c = computeCost();
+		c = computeCost(subset);
 		Double no_branch = computeNoBranchCost();
 		if (no_branch < c){
 			c = no_branch;
 			b = true;
 		}
+		/*
 		System.out.print("[");
 		for (basicTerm t : subset)
 			System.out.print(t.selectivity + ", ");
 		System.out.println("]\nfinal Cost: " + c);
 		System.out.println("k = " + k);
 		System.out.println("b = " + b);
+		*/
+		set = subset;
 		L = null;
 		R = null;
 	}
-	public Double computeCost(){
+	public Double computeCost(List<basicTerm> s){
 		Double q = 1.0;
-		for (basicTerm term : subset){
+		for (basicTerm term : s){
 			q *= term.selectivity;
 		}
 		Double p_product = q; //p1*p2*p3...*pk
@@ -49,14 +51,14 @@ public class planNode {
 			q = 1.0-q;
 		Double totalCost = k*config.r + (k-1)*config.l + config.f*k + config.t + config.m * q + p_product*config.a; //Cost Function from Example 5
 		totalCost = Math.round(totalCost * 1000.000)/1000.000;
-		System.out.println("totalCost: " + totalCost + " with q = " + q);
+		//System.out.println("totalCost: " + totalCost + " with q = " + q);
 		return totalCost;
 	}
 	
 	public Double computeNoBranchCost(){
 		Double no_branch_cost = k*config.r + (k-1)*config.l + config.f*k + config.a;
 		no_branch_cost = Math.round(no_branch_cost * 1000.000)/1000.000;
-		System.out.println("no_branch Cost: " + no_branch_cost);
+		//System.out.println("no_branch Cost: " + no_branch_cost);
 		return no_branch_cost;
 	}
 	
