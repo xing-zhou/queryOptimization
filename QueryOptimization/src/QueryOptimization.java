@@ -95,7 +95,7 @@ public class QueryOptimization {
 				System.out.print(term.selectivity + ", ");
 			System.out.println("hahaha");
 		}
-		List<List<basicTerm>> myps = powerSet(queryList.get(1).conditions);
+		List<List<basicTerm>> myps = powerSet(queryList.get(3).conditions);
 		List<planNode> logicalAnd = new ArrayList<planNode>();
 		for (List<basicTerm> subset : myps){
 			//for (basicTerm term : subset)
@@ -115,7 +115,7 @@ public class QueryOptimization {
 		
 		
 		
-		
+		//main body of the optimization algorithm
 		for (int i = 0; i < logicalAnd.size(); i++){
 			for (int j = 0; j < logicalAnd.size(); j++){
 				if (intersection(logicalAnd.get(i).set,logicalAnd.get(j).set) == false){
@@ -190,15 +190,128 @@ public class QueryOptimization {
 		}
 		
 		System.out.println("--------------------------------------------------------");
-		List<basicTerm> target = new ArrayList<basicTerm>();
+		List<basicTerm> S = new ArrayList<basicTerm>();
 		for (List<basicTerm> key : A.keySet()) {
-			if (key.size() > target.size())
-				target = key;
+			if (key.size() > S.size())
+				S = key;
 		}
-		for (int i = 0; i < target.size(); i++) {
-			System.out.print(target.get(i).selectivity);
+		for (int i = 0; i < S.size(); i++) {
+			System.out.print(S.get(i).selectivity);
 		}
-		System.out.println("\n" + A.get(target).c);
+		System.out.println("\n" + A.get(S).c);
+		
+		planNode node = A.get(S);
+		System.out.println("---------------------------------------------------------------");
+		String branch = "";
+		String nobranch = "";
+		HashMap<basicTerm,Integer> orderMap = new HashMap<basicTerm,Integer>();
+		for (int i = 0; i < S.size(); i++){
+			int j = i+1;
+			orderMap.put(S.get(i), j);
+		}
+		message msg = new message();
+		printTree(A,S,msg,orderMap);
+		System.out.println("bbbbbbbbbbbbbbbbb" + msg.nobranch);
+		output(A,S,msg);
+		
 	}
-
+	
+	public static void printTree(HashMap<List<basicTerm>,planNode> map, List<basicTerm> set, message msg, HashMap<basicTerm,Integer> _orderMap){
+		if (map.get(set).L == null && map.get(set).R == null){
+			//List<basicTerm> no_branch_list = new ArrayList<basicTerm>();
+			if (map.get(set).set.size() <= 1){
+				if (map.get(set).b == true){
+					System.out.print("(no-branch--");
+					System.out.print(map.get(set).set.get(0).selectivity + ")");
+					msg.nobranch += "t" + (_orderMap.get(map.get(set).set.get(0))) + "[o" + (_orderMap.get(map.get(set).set.get(0))) + "[i]]";
+				}
+				else {
+					System.out.print(map.get(set).set.get(0).selectivity);
+					msg.branch += "t" + (_orderMap.get(map.get(set).set.get(0))) + "[o" + (_orderMap.get(map.get(set).set.get(0))) + "[i]]";
+					
+				}
+			}
+			else {
+				if (map.get(set).b == true){
+					System.out.print("(no-branch--");
+					
+					for (int i = 0; i < map.get(set).set.size()-1; i++){
+						System.out.print(map.get(set).set.get(i).selectivity + "&");
+						msg.nobranch += "t" + (_orderMap.get(map.get(set).set.get(i))) + "[o" + (_orderMap.get(map.get(set).set.get(i))) + "[i]]&";
+					}
+					System.out.println(map.get(set).set.get(map.get(set).set.size()-1).selectivity + ")");
+					msg.nobranch += "t" + (_orderMap.get(map.get(set).set.get(map.get(set).set.size()-1))) + "[o" + (_orderMap.get(map.get(set).set.get(map.get(set).set.size()-1))) + "[i]]";
+					System.out.println("no branch test: " + msg.nobranch);
+				}
+				else {
+					for (int i = 0; i < map.get(set).set.size()-1; i++){
+						System.out.print(map.get(set).set.get(i).selectivity + "&");
+						msg.branch += "t" + (_orderMap.get(map.get(set).set.get(i))) + "[o" + (_orderMap.get(map.get(set).set.get(i))) + "[i]]&";
+					}
+					System.out.println(map.get(set).set.get(map.get(set).set.size()-1).selectivity + ")");
+					msg.branch += "t" + (_orderMap.get(map.get(set).set.get(map.get(set).set.size()-1))) + "[o" + (_orderMap.get(map.get(set).set.get(map.get(set).set.size()-1))) + "[i]]";
+					System.out.println("no branch test: " + msg.branch);
+				}
+			}
+		}
+		else {
+			if (map.get(set).L.set.size() <= 1){
+				if (map.get(set).b == true){
+					System.out.print("(no-branch--");
+					System.out.print(map.get(set).L.set.get(0).selectivity + ")");
+					msg.nobranch += "t" + (_orderMap.get(map.get(set).L.set.get(0))) + "[o" + (_orderMap.get(map.get(set).L.set.get(0))) + "[i]]";
+					System.out.println("no branch test: " + msg.nobranch);
+				}
+				else {
+					System.out.print(map.get(set).L.set.get(0).selectivity);
+					msg.branch += "t" + (_orderMap.get(map.get(set).L.set.get(0))) + "[o" + (_orderMap.get(map.get(set).L.set.get(0))) + "[i]]";
+					
+				}
+			}
+			else {
+				if (map.get(set).b == true){
+					System.out.print("(no-branch--");
+					
+					
+					for (int i = 0; i < map.get(set).L.set.size()-1; i++){
+						System.out.print(map.get(set).L.set.get(i).selectivity + "&");
+						msg.nobranch += "t" + (_orderMap.get(map.get(set).L.set.get(i))) + "[o" + (_orderMap.get(map.get(set).L.set.get(i))) + "[i]]&";
+					}
+					System.out.println(map.get(set).L.set.get(map.get(set).L.set.size()-1).selectivity + ")");
+					msg.branch += "t" + (_orderMap.get(map.get(set).L.set.get(map.get(set).L.set.size()-1))) + "[o" + (_orderMap.get(map.get(set).L.set.get(map.get(set).L.set.size()-1))) + "[i]]";
+					System.out.println("no branch test: " + msg.nobranch);
+				}
+				else{
+					/*
+					for (int i = 0; i < map.get(set).L.set.size()-1; i++)
+						System.out.print(map.get(set).L.set.get(i).selectivity + "&");
+					System.out.println(map.get(set).L.set.get(map.get(set).set.size()-1).selectivity);
+					*/
+					for (int i = 0; i < map.get(set).L.set.size()-1; i++){
+						System.out.print(map.get(set).L.set.get(i).selectivity + "&");
+						msg.branch += "t" + (_orderMap.get(map.get(set).L.set.get(i))) + "[o" + (_orderMap.get(map.get(set).L.set.get(i))) + "[i]]&";
+					}
+					System.out.println(map.get(set).L.set.get(map.get(set).set.size()-1).selectivity + ")");
+					msg.branch += "t" + (_orderMap.get(map.get(set).L.set.get(map.get(set).L.set.size()-1))) + "[o" + (_orderMap.get(map.get(set).L.set.get(map.get(set).L.set.size()-1))) + "[i]]";
+					System.out.println("no branch test: " + msg.branch);
+				}
+			}
+			System.out.print("-&&-");
+			printTree(map, map.get(set).R.set, msg, _orderMap);
+		}
+	}
+	
+	public static void output(HashMap<List<basicTerm>,planNode> map, List<basicTerm> set, message msg) {
+		System.out.println("\n==================================================================");
+		for (basicTerm term : map.get(set).set){
+			System.out.print(term.selectivity + " ");
+		}
+		System.out.println("\n------------------------------------------------------------------");
+		System.out.println("if (" + msg.branch + ") {");
+		System.out.println("\tanswer[j] = i;");
+		System.out.println("\tj += (" + msg.nobranch + ");");
+		System.out.println("}");
+		System.out.println("\n------------------------------------------------------------------");
+		System.out.println("cost: " + map.get(set).c);
+	}
 }
