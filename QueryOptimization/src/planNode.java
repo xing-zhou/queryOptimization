@@ -1,7 +1,7 @@
 import java.text.DecimalFormat;
 import java.util.List;
 
-
+//fundamental structure of a plan, containing all the information about a plan (&-term)
 public class planNode {
 	List<basicTerm> set;//the &-term in this plan
 	Double c;//cost of this plan (&-term)

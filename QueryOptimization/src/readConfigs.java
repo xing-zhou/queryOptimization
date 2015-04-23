@@ -6,6 +6,7 @@ import java.util.List;
 
 
 public class readConfigs {
+	//this readConfigs read in and store the data of the config file
 	Double r;
 	Double t;
 	Double l;
@@ -14,13 +15,13 @@ public class readConfigs {
 	Double f;
 
 	public readConfigs(String configPath){
+		//use bufferedReader to read in and store data
 		BufferedReader br = null;
 		List<Double> list = new ArrayList<Double>();
 		try {
 			String configLine;
 			br = new BufferedReader(new FileReader(configPath));
 			while ((configLine = br.readLine()) != null) {
-				//System.out.println(configLine);
 				String [] s = configLine.split("\\s+");
 				list.add(Double.valueOf(s[2]));
 			}

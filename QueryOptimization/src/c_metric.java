@@ -1,4 +1,5 @@
 public class c_metric {
+	//the c-metric of a plan (&-term)
 	Double cost_ratio;
 	Double combined_selectivity;
 	public c_metric(planNode E){

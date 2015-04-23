@@ -1,5 +1,6 @@
 
 public class d_metric {
+	//data structure of d-metric of a plan (&-term)
 	Double fcost;
 	Double combined_selectivity;
 	public d_metric(planNode E){
